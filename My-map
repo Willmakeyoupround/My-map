@@ -44,33 +44,33 @@
               'type': 'Feature',
               'geometry': {
                 'type': 'Point',
-                'coordinates': [-121.415061, 40.506229],
+                'coordinates': [-122.2396284060897, 37.7478062184528],
               },
               "properties": {
-                'name': "my first popup",
-                'description': "I went camping here",
+                'name': "Harbor bay club",
+                'description': "This is my gym",
               }
             },
             {
               'type': 'Feature',
               'geometry': {
                 'type': 'Point',
-                'coordinates': [-121.505184, 40.488084],
+                'coordinates': [-122.2550123922956437, 37.871404630148305],
               },
               "properties": {
-                'name': "my 2nd popup",
-                'description': "I went skiing here",
+                'name': "UC Berkely",
+                'description': "I herd good things about this place",
               }
             },
             {
               'type': 'Feature',
               'geometry': {
                 'type': 'Point',
-                'coordinates': [-121.354465, 40.488737],
+                'coordinates': [-122.40979954574773, 37.80887216823471],
               },
               "properties": {
-                'name': "my 3rd popup",
-                'description': "I went hiking here",
+                'name': "Pier 39",
+                'description': "I went here plenty of times",
               }
             }
           ]
