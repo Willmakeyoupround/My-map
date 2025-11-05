@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>My Favorite Bay Area Locations</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+    
+    .mapboxgl-popup-content {
+      border-radius: 12px;
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      max-width: 320px;
+    }
+    
+    .location-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    
+    .popup-content {
+      padding: 15px;
+    }
+    
+    .popup-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    .popup-description {
+      font-size: 15px;
+      color: #666;
+      line-height: 1.5;
+    }
+    
+    .map-title {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 1;
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="map-title">My Favorite Bay Area Locations</div>
+  <div id="map"></div>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZG9tbGV0IiwiYSI6ImNsanp3a24xeDAxMjMzZGxpeDY3MWZpMXkifQ.4TIVDbum8xmIdzokCod3Ww';
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/josephriveracosta/cmgfp7ig8008301ree85k6jyk',
+      center: [-122.1, 37.8],
+      zoom: 9.5
+    });
+
+    map.on('load', () => {
+      map.addSource('my-places', {
+        'type': 'geojson',
+        'data': {
+          'type': 'FeatureCollection',
+          'features': [
+            {
+              'type': 'Feature',
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [-122.2396284060897, 37.7478062184528],
+              },
+              "properties": {
+                'name': "Harbor Bay Club",
+                'description': "This is my gym - a great place to work out and stay healthy with excellent facilities and friendly staff.",
+                'image': 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80'
+              }
+            },
+            {
+              'type': 'Feature',
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [-122.2550123922956437, 37.871404630148305],
+              },
+              "properties": {
+                'name': "UC Berkeley",
+                'description': "I've heard good things about this prestigious university with its beautiful campus and excellent academic programs.",
+                'image': 'https://www.collegeadvisor.com/wp-content/uploads/2021/08/UCBerkeleyCampus-scaled.jpg'
+              }
+            },
+            {
+              'type': 'Feature',
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [-122.40979954574773, 37.80887216823471],
+              },
+              "properties": {
+                'name': "Pier 39",
+                'description': "I've visited here many times - a vibrant waterfront destination with shops, restaurants, entertainment, and the famous sea lions!",
+                'image': 'https://upload.wikimedia.org/wikipedia/commons/6/65/Pier_39_in_2021.jpg'
+              }
+            }
+          ]
+        }
+      });
+
+      map.addLayer({
+        'id': 'my-places',
+        'type': 'circle',
+        'source': 'my-places',
+        'paint': {
+          'circle-radius': 10,
+          'circle-color': '#B42222',
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#FFFFFF'
+        }
+      });
+    });
+
+    // Add popup on click
+    map.on('click', 'my-places', (e) => {
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      const name = e.features[0].properties.name;
+      const description = e.features[0].properties.description;
+      const image = e.features[0].properties.image;
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(`
+          <img src="${image}" alt="${name}" class="location-image">
+          <div class="popup-content">
+            <div class="popup-title">${name}</div>
+            <div class="popup-description">${description}</div>
+          </div>
+        `)
+        .addTo(map);
+    });
+
+    // Change cursor to pointer when hovering over places
+    map.on('mouseenter', 'my-places', () => {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+
+    map.on('mouseleave', 'my-places', () => {
+      map.getCanvas().style.cursor = '';
+    });
+  </script>
+
+</body>
+
+</html>
