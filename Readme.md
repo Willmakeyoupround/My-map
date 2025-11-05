@@ -3,9 +3,9 @@
 # I will explain the style of the map
 # I will explain which website I used
 
-# "Bike The Bay" App
+# "New greenland" App
 
-!["Bike The Bay" App](img/joseph_rules.png)
+!["New Greenland" App](img/joseph_rules.png)
 
 ## What did I build?
 
